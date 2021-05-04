@@ -9,6 +9,7 @@ com\upgrad\FoodOrderingApp\service\ServiceConfiguration.class
 com\upgrad\FoodOrderingApp\service\common\GenericErrorCode.class
 com\upgrad\FoodOrderingApp\service\exception\PaymentMethodNotFoundException.class
 com\upgrad\FoodOrderingApp\service\exception\RestaurantNotFoundException.class
+com\upgrad\FoodOrderingApp\service\exception\UpdateCustomerException.class
 com\upgrad\FoodOrderingApp\service\exception\SignUpRestrictedException.class
 com\upgrad\FoodOrderingApp\service\exception\SaveAddressException.class
 com\upgrad\FoodOrderingApp\service\exception\AuthorizationFailedException.class
