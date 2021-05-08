@@ -1,4 +1,4 @@
-package com.upgrad.FoodOrderingApp.service.entity;
+package com.upgrad.FoodOrderingApp.service.Entity;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -38,7 +38,7 @@ public class AddressEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private StateEntity state_id;
+    private com.upgrad.FoodOrderingApp.service.Entity.StateEntity state_id;
 
     @Column(name = "active")
     private Integer active;
@@ -49,7 +49,7 @@ public class AddressEntity implements Serializable {
             String locality,
             String city,
             String pincode,
-            StateEntity state) {
+            com.upgrad.FoodOrderingApp.service.Entity.StateEntity state) {
         this.uuid = uuid;
         this.flat_buil_number = flatBuilNo;
         this.locality = locality;
@@ -108,11 +108,11 @@ public class AddressEntity implements Serializable {
         this.pincode = pincode;
     }
 
-    public StateEntity getState() {
+    public com.upgrad.FoodOrderingApp.service.Entity.StateEntity getState() {
         return state_id;
     }
 
-    public void setState(StateEntity state_id) {
+    public void setState(com.upgrad.FoodOrderingApp.service.Entity.StateEntity state_id) {
         this.state_id = state_id;
     }
 

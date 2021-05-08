@@ -1,4 +1,4 @@
-package com.upgrad.FoodOrderingApp.service.entity;
+package com.upgrad.FoodOrderingApp.service.Entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

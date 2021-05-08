@@ -1,13 +1,11 @@
 package com.upgrad.FoodOrderingApp.service.dao;
-import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
-import com.upgrad.FoodOrderingApp.service.entity.CustomerAddressEntity;
-import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
+
+import com.upgrad.FoodOrderingApp.service.Entity.AddressEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //This Class is created to access DB with respect to Address entity
