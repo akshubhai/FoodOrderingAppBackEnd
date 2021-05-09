@@ -71,4 +71,36 @@ public class ItemService {
 
         return sortedItemEntites;
     }
+
+    /* Get Items By filtering Category UUID and Restaurant UUID - Returns list of items in a category in a restaurant  */
+    public List<ItemEntity> getItemsByCategoryAndRestaurant(String restaurantUuid, String categoryUuid) {
+
+        RestaurantEntity restaurantEntity = restaurantDao.getRestaurantByUuid(restaurantUuid);
+
+        CategoryEntity categoryEntity = categoryDao.getCategoryByUuid(categoryUuid);
+
+        List<RestaurantItemEntity> restaurantItemEntities = restaurantItemDao.getItemByRestaurant(restaurantEntity);
+
+        List<CategoryItemEntity> categoryItemEntities = categoryDao.getItemByCategory(categoryEntity);
+
+        List<ItemEntity> itemEntities = new LinkedList<>();
+        restaurantItemEntities.forEach(restaurantItemEntity -> {
+            categoryItemEntities.forEach(categoryItemEntity -> {
+                if (restaurantItemEntity.getItem().equals(categoryItemEntity.getItem())) {
+                    itemEntities.add(restaurantItemEntity.getItem());
+                }
+            });
+        });
+        return itemEntities;
+    }
+
+    /* Get Item by Item UUID */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public ItemEntity getItemByUuid(final String itemUuid) throws ItemNotFoundException {
+        ItemEntity itemEntity = itemDao.getItemByUuid(itemUuid);
+        if(itemEntity == null ) {
+            throw new ItemNotFoundException("INF-003", "No item by this id exist");
+        }
+        return itemEntity;
+    }
 }
