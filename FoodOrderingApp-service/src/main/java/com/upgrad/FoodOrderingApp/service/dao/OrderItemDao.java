@@ -16,7 +16,7 @@ public class OrderItemDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    /* Get Items in ORder */
+    /* Get Items in order */
     public List<OrderItemEntity> getItemsByOrders(OrderEntity orderEntity) {
         try {
             List<OrderItemEntity> orderItemEntities = entityManager.createNamedQuery("getItemsByOrders", OrderItemEntity.class).setParameter("order", orderEntity).getResultList();
@@ -31,6 +31,7 @@ public class OrderItemDao {
         try {
             List<OrderItemEntity> orderItemEntities = entityManager.createNamedQuery("getOrderItemByOrder", OrderItemEntity.class).setParameter("order", orderEntity).getResultList();
             return orderItemEntities;
+
         } catch (NoResultException nre) {
             return null;
         }
