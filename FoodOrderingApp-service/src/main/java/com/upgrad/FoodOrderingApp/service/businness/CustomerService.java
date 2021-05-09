@@ -67,7 +67,7 @@ public class CustomerService {
         }
         return customerEntity;
     }
-
+    /* validate if the password follows the required format */
     private void validatePassword(String password) throws SignUpRestrictedException {
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
@@ -76,7 +76,7 @@ public class CustomerService {
         }
     }
 
-
+    /*validate if email follows the required format*/
     private void validateEmail(String email) throws SignUpRestrictedException {
         Pattern VALID_EMAIL_REGEX =
                 Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", Pattern.CASE_INSENSITIVE);
@@ -85,12 +85,39 @@ public class CustomerService {
             throw new SignUpRestrictedException("SGR-002", "Invalid email-id format!");
         }
     }
-
+    /*validate if the contactNo follows the required format*/
     private void validateContactNo(String contactNumber) throws SignUpRestrictedException {
         if (Pattern.matches("[0-9]{10}", contactNumber) == false) {
             throw new SignUpRestrictedException("SGR-003", "Invalid contact number!");
         }
     }
+    /* Authenticate customer - whether customer exists in DB, whetther password matches, whether customer
+         is not logged out or session is not expired */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerAuthEntity authenticate(final String contactNumber, final String password) throws AuthenticationFailedException {
+
+        CustomerEntity customerEntity = customerDao.IsContactNumberExists(contactNumber);
+        if (customerEntity == null) {
+            throw new AuthenticationFailedException("ATH-001", "This contact number has not been registered!");
+        }
+        String encryptedPassword = passwordCryptographyProvider.encrypt(password, customerEntity.getSalt());
+        if (encryptedPassword.equals(customerEntity.getPassword())) {
+            JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(encryptedPassword);
+            CustomerAuthEntity customerAuthTokenEntity = new CustomerAuthEntity();
+            customerAuthTokenEntity.setCustomer(customerEntity);
+            customerAuthTokenEntity.setUuid(UUID.randomUUID().toString());
+            final ZonedDateTime now = ZonedDateTime.now();
+            final ZonedDateTime expiresAt = now.plusHours(8);
+            customerAuthTokenEntity.setExpiresAt(expiresAt);
+            customerAuthTokenEntity.setAccessToken(jwtTokenProvider.generateToken(customerAuthTokenEntity.getUuid(), now, expiresAt));
+            customerAuthTokenEntity.setLoginAt(now);
+            customerDao.createAuthToken(customerAuthTokenEntity);
+            return customerAuthTokenEntity;
+        } else {
+            throw new AuthenticationFailedException("ATH-002", "Invalid Credentials");
+        }
+    }
+
 
 
 }
