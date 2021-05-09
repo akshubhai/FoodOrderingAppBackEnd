@@ -27,7 +27,7 @@ public class OrderDao {
         }
     }
 
-    /* Get ORders By Customers */
+    /* Get orders By Customers */
     public List<OrderEntity> getOrdersByCustomers(CustomerEntity customerEntity) {
         try {
             List<OrderEntity> ordersEntities = entityManager.createNamedQuery("getOrdersByCustomer", OrderEntity.class).setParameter("customer", customerEntity).getResultList();
@@ -37,7 +37,7 @@ public class OrderDao {
         }
     }
 
-    /* Persist Order */
+    /* Persist Order in DB */
     public OrderEntity saveOrder(OrderEntity orderEntity) {
         try {
             entityManager.persist(orderEntity);
@@ -47,7 +47,7 @@ public class OrderDao {
         }
     }
 
-    /* Persist Order Item  */
+    /* Persist Order Item in DB  */
     public OrderItemEntity saveOrderItem(OrderItemEntity orderedItem) {
         try {
             entityManager.persist(orderedItem);
