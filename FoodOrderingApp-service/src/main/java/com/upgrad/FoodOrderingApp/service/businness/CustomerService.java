@@ -67,7 +67,7 @@ public class CustomerService {
         }
         return customerEntity;
     }
-    /* validate if the password follows the required format */
+
     private void validatePassword(String password) throws SignUpRestrictedException {
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
@@ -76,7 +76,7 @@ public class CustomerService {
         }
     }
 
-    /*validate if email follows the required format*/
+
     private void validateEmail(String email) throws SignUpRestrictedException {
         Pattern VALID_EMAIL_REGEX =
                 Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", Pattern.CASE_INSENSITIVE);
@@ -85,12 +85,13 @@ public class CustomerService {
             throw new SignUpRestrictedException("SGR-002", "Invalid email-id format!");
         }
     }
-    /*validate if the contactNo follows the required format*/
+
     private void validateContactNo(String contactNumber) throws SignUpRestrictedException {
         if (Pattern.matches("[0-9]{10}", contactNumber) == false) {
             throw new SignUpRestrictedException("SGR-003", "Invalid contact number!");
         }
     }
+
     /* Authenticate customer - whether customer exists in DB, whetther password matches, whether customer
          is not logged out or session is not expired */
     @Transactional(propagation = Propagation.REQUIRED)
@@ -117,6 +118,7 @@ public class CustomerService {
             throw new AuthenticationFailedException("ATH-002", "Invalid Credentials");
         }
     }
+
     /* Set Logout in Database if No Exceptions like customer not present, customer not logged in, customer logged out occur */
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerAuthEntity logout(final String accessToken) throws AuthorizationFailedException {
@@ -139,7 +141,6 @@ public class CustomerService {
             }
         }
     }
-
     /* Get Customer Entity from Access Token */
     @Transactional(propagation = Propagation.REQUIRED)
     public CustomerEntity getCustomer(final String authorizationToken) throws AuthorizationFailedException{
@@ -191,6 +192,4 @@ public class CustomerService {
         Matcher m = pattern.matcher(pass);
         return m.matches();
     }
-
-
 }

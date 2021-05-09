@@ -109,7 +109,8 @@ public class CustomerController {
             throw new AuthenticationFailedException("ATH-003", "Incorrect format of decoded customer name and password");
         }
     }
-    /* This method handles the customer logout ,It takes the Bearer accessToken from authorization in the header and logs out the customer
+    /* This method handles the customer logout ,
+    Takes the Bearer accessToken from authorization in the header and logs out the customer
     and returns a LogoutResponse conatining UUID of customer and the successful message.If error returns the error code with corresponding Message.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/customer/logout", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
