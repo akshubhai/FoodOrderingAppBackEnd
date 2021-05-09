@@ -44,8 +44,8 @@ public class CustomerController {
         String[] decodedArray = decodedText.split(":");
 
         /* Getting Customer from Customer Auth Token if Customer Exists, setting header with access token and
-         * sending login response
-         *  */
+         sending login response
+          */
         CustomerAuthEntity customerAuthTokenEntity = customerService.authenticate(decodedArray[0], decodedArray[1]);
         CustomerEntity customerEntity = customerAuthTokenEntity.getCustomer();
         LoginResponse loginResponse = new LoginResponse().id(customerEntity.getUuid()).message("LOGGED IN SUCCESSFULLY");
