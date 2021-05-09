@@ -1,5 +1,11 @@
+package com.upgrad.FoodOrderingApp.api.controller;
+
 import com.upgrad.FoodOrderingApp.api.model.*;
+import com.upgrad.FoodOrderingApp.service.businness.AddressService;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
+import com.upgrad.FoodOrderingApp.service.dao.AddressDao;
+import com.upgrad.FoodOrderingApp.service.dao.CustomerAddressDao;
+import com.upgrad.FoodOrderingApp.service.dao.StateDao;
 import com.upgrad.FoodOrderingApp.service.entity.AddressEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.StateEntity;
@@ -23,6 +29,9 @@ public class AddressController {
 
     @Autowired
     CustomerService customerService; // Handles all the Service Related to the Customer.
+
+    @Autowired
+    AddressService addressService; // Handles all the Service Related to the Address.
 
 
     /* The method handles Address save Related request.It takes the details as per in the SaveAddressRequest
