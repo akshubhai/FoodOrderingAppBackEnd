@@ -140,7 +140,57 @@ public class CustomerService {
         }
     }
 
+    /* Get Customer Entity from Access Token */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity getCustomer(final String authorizationToken) throws AuthorizationFailedException{
+        CustomerAuthEntity customerAuth = customerDao.checkAuthToken(authorizationToken);
+        final ZonedDateTime current = ZonedDateTime.now();
+        if (customerAuth == null){
+            throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in.");
+        }
+        if (customerAuth.getLogoutAt() != null){
+            throw new AuthorizationFailedException("ATHR-002", "Customer is logged out. Log in again to access this endpoint.");
+        }
+        if (customerAuth.getExpiresAt().isBefore(current)){
+            throw new AuthorizationFailedException("ATHR-003", "Your session is expired. Log in again to access this endpoint.");
+        }
+        return customerAuth.getCustomer();
+    }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity updateCustomer(CustomerEntity customerEntity)  {
+
+        CustomerEntity updatedCustomer = customerDao.updateCustomerDetails(customerEntity);
+        return updatedCustomer;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public CustomerEntity updateCustomerPassword(String oldPassword, String updatePassword, CustomerEntity customerEntity)
+            throws UpdateCustomerException {
+
+        if(!checkForPasswordStrength(updatePassword)) {
+            throw new UpdateCustomerException("UCR-001", "Weak password!");
+        }
+        final String encryptedPassword = passwordCryptographyProvider.encrypt(oldPassword, customerEntity.getSalt());
+        if(!encryptedPassword.equals(customerEntity.getPassword())) {
+
+            throw new UpdateCustomerException("UCR-004", "Incorrect old password!");
+        }
+        String[] encryptedText = passwordCryptographyProvider.encrypt(updatePassword);
+        customerEntity.setSalt(encryptedText[0]);
+        customerEntity.setPassword(encryptedText[1]);
+        CustomerEntity updatedPaswordCustomer = customerDao.updatePassword(customerEntity);
+        return updatedPaswordCustomer;
+    }
+    private boolean checkForPasswordStrength (String pass) {
+        String regex = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        if (pass == null) {
+            return false;
+        }
+        Matcher m = pattern.matcher(pass);
+        return m.matches();
+    }
 
 
 }
