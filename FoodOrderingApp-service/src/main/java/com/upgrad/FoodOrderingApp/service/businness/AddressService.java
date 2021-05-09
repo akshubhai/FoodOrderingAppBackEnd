@@ -22,6 +22,19 @@ import java.util.UUID;
 /* Service class for Address Entity and customerAddress */
 @Service
 public class AddressService {
+    @Autowired
+    AddressDao addressDao; //Handle all data of Address
+
+    @Autowired
+    CustomerDao customerDao; //Handle all data customer
+
+    @Autowired
+    StateDao stateDao;
+
+    @Autowired
+    CustomerAddressDao customerAddressDao;
+
+
     /* This method is to saveAddress.Takes the Address and state entity and saves the Address to the DB.
            If error throws exception with error code and error message.
             */
