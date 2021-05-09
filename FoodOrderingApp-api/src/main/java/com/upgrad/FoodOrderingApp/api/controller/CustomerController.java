@@ -1,7 +1,7 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
-import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
+import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
@@ -32,6 +32,12 @@ It is a GET Request and takes Category UUID in category_id parameter as path var
 @RequestMapping("")
 @CrossOrigin
 public class CustomerController {
+
+    /*  AutoWiring customer service */
+    @Autowired
+    CustomerService customerService;
+
+
     /*This Method handles the Login request and takes authorization parameter in Base64 coded and produces a LoginResponse containing info customer
         and response header containing bearer accessToken. If error returns the error code with corresponding Message.
          */
