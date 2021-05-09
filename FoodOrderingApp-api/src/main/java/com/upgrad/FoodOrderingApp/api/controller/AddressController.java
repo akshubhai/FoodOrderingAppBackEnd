@@ -113,4 +113,27 @@ public class AddressController {
 
         return new ResponseEntity<DeleteAddressResponse>(deleteAddressResponse, HttpStatus.OK);
     }
+
+    /*  The method handles States request.It produces response in StatesListResponse and returns UUID & stateName .If error Return error code and error Message.
+     */
+
+    @RequestMapping(method = RequestMethod.GET, path = "/states", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<StatesListResponse> getAllStates() {
+        List<StateEntity> stateEntities = addressService.getAllStates();
+
+        if(stateEntities.isEmpty()) {
+            return  new ResponseEntity<StatesListResponse>(new StatesListResponse(), HttpStatus.OK);
+        }
+
+        List<StatesList> states = new ArrayList<>();
+        for (StateEntity state : stateEntities) {
+            UUID stateUuid = UUID.fromString(state.getUuid());
+            StatesList statesList = new StatesList().id(stateUuid).stateName(state.getStateName());
+            //StatesListResponse statesListResponse = new StatesListResponse().addStatesItem(statesList);
+            states.add(statesList);
+        }
+
+        StatesListResponse statesListResponse = new StatesListResponse().states(states);
+        return  new ResponseEntity<StatesListResponse>(statesListResponse, HttpStatus.OK);
+    }
 }
